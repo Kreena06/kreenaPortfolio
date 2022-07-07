@@ -6,9 +6,9 @@ $subject = $_POST['subject'];
 $message = $_POST['message'];
 
 // Database connection
-$conn = new mysqli('localhost', 'root', '', 'Kreena');
-if ($conn->connect_error) {
-	die('Connection Failed : ' . $conn->connect_error);
+$conn = mysqli_connect('localhost', 'root', '', 'Kreena');
+if (mysqli_connect_error()) {
+	echo "Cannot connect";
 } else {
 	$stmt = $conn -> prepare("insert into KreenaData($name,$email,$subject,$message) values(?,?,?,?)");
 	$stmt->bind_param("ssss",$name,$email,$subject,$message);
