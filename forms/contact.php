@@ -9,19 +9,18 @@
   // Replace contact@example.com with your real receiving email address
   $receiving_email_address = 'kreenapatel611@gmail.com';
 
-  if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
-    include( $php_email_form );
+   if( file_exists($php_email_form = '../assets/vendor/php-email-form/php-email-form.php' )) {
+     include( $php_email_form );
   } else {
-    die( 'Unable to load the "PHP Email Form" Library!');
-  }
-
-  $contact = new PHP_Email_Form;
-  $contact->ajax = true;
+     die( 'Unable to load the "PHP Email Form" Library!');
+   }
+//  $contact = new PHP_Email_Form;
+//  $contact->ajax = true;
   
-  $contact->to = $receiving_email_address;
-  $contact->from_name = $_POST['name'];
-  $contact->from_email = $_POST['email'];
-  $contact->subject = $_POST['subject'];
+$contact->to = $receiving_email_address;
+$contact->from_name = $_POST['name'];
+$contact->from_email = $_POST['email'];
+$contact->subject = $_POST['subject'];
 
   // Uncomment below code if you want to use SMTP to send emails. You need to enter your correct SMTP credentials
   /*
@@ -38,4 +37,25 @@
   $contact->add_message( $_POST['message'], 'Message', 10);
 
   echo $contact->send();
-?>
+  $name = $_POST['firstName'];
+	$gender = $_POST['gender'];
+	$email = $_POST['email'];
+  $subject = $_POST['subject'];
+  $message = $_POST['message'];
+	$password = $_POST['password'];
+  $number = $_POST['number'];
+
+	// Database connection
+	$conn = new mysqli('localhost','root','','test');
+	if($conn->connect_error){
+		echo "$conn->connect_error";
+		die("Connection Failed : ". $conn->connect_error);
+	} else {
+		$stmt = $conn->prepare("insert into registration(firstName, lastName, gender, email, password, number) values(?, ?, ?, ?, ?, ?)");
+		$stmt->bind_param("ssss", $firstName, $email, $subject, $message);
+		$execval = $stmt->execute();
+		echo $execval;
+		echo "Registration successfully...";
+		$stmt->close();
+		$conn->close();
+	}
